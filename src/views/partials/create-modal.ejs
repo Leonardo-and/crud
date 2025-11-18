@@ -1,0 +1,38 @@
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-create">
+  <i class="bi bi-person-plus"></i> Cadastrar Usuário
+</button>
+
+<div class="modal fade" id="modal-create" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabel-create">Cadastrar usuário</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        <form id="createForm" onsubmit="createUser(event)">
+          <div class="form-group mb-3">
+            <label for="firstName-create">Nome</label>
+            <input type="text" class="form-control" name="firstName" id="firstName-create" aria-describedby="firstName" placeholder="Digite o nome..." required>
+          </div>
+          <div class="form-group mb-3">
+            <label for="lastName-create">Sobrenome</label>
+            <input type="text" class="form-control" name="lastName" id="lastName-create" aria-describedby="lastName" placeholder="Digite o sobrenome" required>
+          </div>
+          <div class="form-group mb-3">
+            <label for="email-create">Email</label>
+            <input type="email" class="form-control" name="email" id="email-create" aria-describedby="email" placeholder="exemplo@email.com" required>
+          </div>
+          <div class="form-group mb-3">
+            <label for="birth-create-form">Data de nascimento</label>
+            <input type="date" class="form-control" name="birth" id="birth-create" aria-describedby="birth" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        <button type="submit" class="btn btn-primary" form="createForm">Cadastrar</button>
+      </div>
+    </div>
+  </div>
+</div>

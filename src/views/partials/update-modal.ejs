@@ -1,0 +1,38 @@
+<button type="button" class="btn btn-primary btn-sm me-1" data-bs-toggle="modal" data-bs-target="#modal-<%= user.id %>">
+  <i class="bi bi-pencil-square"></i>
+</button>
+
+<div class="modal fade" id="modal-<%= user.id %>" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabel-<%= user.id %>">Editar usuário</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        <form id="updateForm-<%= user.id %>" onsubmit="updateUser(event, '<%= user.id %>')">
+          <div class="form-group mb-3">
+            <label for="firstName-<%= user.id %>">Nome</label>
+            <input type="text" class="form-control" name="firstName" id="firstName-<%= user.id %>" value="<%= user.firstName %>" aria-describedby="firstName" placeholder="Digite o nome...">
+          </div>
+          <div class="form-group mb-3">
+            <label for="lastName-<%= user.id %>">Sobrenome</label>
+            <input type="text" class="form-control" name="lastName" id="lastName-<%= user.id %>" value="<%= user.lastName %>" aria-describedby="lastName" placeholder="Digite o sobrenome...">
+          </div>
+          <div class="form-group mb-3">
+            <label for="email-<%= user.id %>">Email</label>
+            <input type="email" class="form-control" name="email" id="email-<%= user.id %>" value="<%= user.email %>" aria-describedby="email" placeholder="exemplo@email.com">
+          </div>
+          <div class="form-group mb-3">
+            <label for="birth-<%= user.id %>">Data de nascimento</label>
+            <input type="date" class="form-control" name="birth" id="birth-<%= user.id %>" value="<%= user.birth %>" aria-describedby="birth">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary" form="updateForm-<%= user.id %>">Salvar alterações</button>
+      </div>
+    </div>
+  </div>
+</div>

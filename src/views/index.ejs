@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRUD</title>
+  <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/bootstrap/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1 class="text-primary mb-0">
+        Gerenciamento de Usuários
+      </h1>
+      <%- include('partials/create-modal') %>
+    </header>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Sobrenome</th>
+            <th scope="col">E-mail</th>
+            <th scope="col">Data de nascimento</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (users.length === 0) { %>
+          <tr>
+            <td colspan="6" class="text-center text-muted py-4">
+              Nenhum usuário cadastrado
+            </td>
+          </tr>
+          <% } else { %>
+          <% users.forEach(user => { %>
+          <tr data-id="<%= user.id %>">
+            <th scope="row"><%= user.id %></th>
+            <td><%= user.firstName %></td>
+            <td><%= user.lastName %></td>
+            <td><%= user.email %></td>
+            <td>
+              <%= new Intl.DateTimeFormat('pt-BR', { timeZone: 'UTC' }).format(new Date(user.birth)) %>
+            </td>
+            <td>
+              <%- include('partials/update-modal', { user }) %>
+              <%- include('partials/delete-modal', { id: user.id }) %>
+            </td>
+          </tr>
+          <% }) %>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script src="/js/index.js"></script>
+  <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
