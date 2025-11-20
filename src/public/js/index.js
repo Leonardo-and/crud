@@ -1,7 +1,8 @@
 /** biome-ignore-all lint/correctness/noUnusedVariables: needed */
 
 function showToast(message, type) {
-	const toastContainer = document.querySelector('.toast-container') || createToastContainer()
+	const toastContainer =
+		document.querySelector('.toast-container') || createToastContainer()
 	const toastId = `toast-${Date.now()}`
 
 	const toastHTML = `
@@ -17,7 +18,10 @@ function showToast(message, type) {
 
 	toastContainer.insertAdjacentHTML('beforeend', toastHTML)
 	const toastElement = document.getElementById(toastId)
-	const toast = new bootstrap.Toast(toastElement, { autohide: true, delay: 3000 })
+	const toast = new bootstrap.Toast(toastElement, {
+		autohide: true,
+		delay: 3000,
+	})
 	toast.show()
 
 	toastElement.addEventListener('hidden.bs.toast', () => toastElement.remove())
@@ -30,10 +34,9 @@ function createToastContainer() {
 	return container
 }
 
-
 function handleError(error, message = 'Ocorreu um erro') {
 	console.error(message, error)
-	showToast(`${message}. Tente novamente.`, 'error')
+	showToast(`${message}: ${error.message}. Tente novamente.`, 'error')
 }
 
 async function deleteUser(id) {
@@ -43,13 +46,9 @@ async function deleteUser(id) {
 			headers: { 'Content-Type': 'application/json' },
 		})
 
-		if (!response.ok) {
-			throw new Error(`HTTP error. Status: ${response.status}`)
-		}
-
 		const data = await response.json()
 
-		if (data.error) {
+		if (!response.ok && data.error) {
 			throw new Error(data.message)
 		}
 
@@ -82,11 +81,6 @@ async function updateUser(event, id) {
 		birth: formData.get('birth'),
 	}
 
-	if (!userData.firstName || !userData.email || !userData.birth) {
-		showToast('Preencha todos os campos obrigatórios', 'error')
-		return
-	}
-
 	try {
 		const response = await fetch(`/users/${id}`, {
 			method: 'PATCH',
@@ -94,23 +88,21 @@ async function updateUser(event, id) {
 			body: JSON.stringify(userData),
 		})
 
-		if (!response.ok) {
-			throw new Error(`HTTP error. Status: ${response.status}`)
-		}
-
 		const data = await response.json()
 
-		if (data.error) {
+		if (!response.ok && data.error) {
 			throw new Error(data.message)
 		}
 
-		const modal = bootstrap.Modal.getInstance(document.getElementById(`modal-${id}`))
+		const modal = bootstrap.Modal.getInstance(
+			document.getElementById(`modal-${id}`),
+		)
 		modal.hide()
 
 		updateTableRow(id, userData)
 		showToast('Usuário atualizado com sucesso.', 'success')
 	} catch (error) {
-		handleError(error, 'Erro ao atualizar usuário.')
+		handleError(error, 'Erro ao atualizar usuário')
 	}
 }
 
@@ -129,22 +121,20 @@ async function createUser(event) {
 		const response = await fetch('/users', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(userData)
+			body: JSON.stringify(userData),
 		})
-
-		if (!response.ok) {
-			throw new Error(`HTTP error. Status: ${response.status}`)
-		}
 
 		const result = await response.json()
 
-		if (result.error) {
-			throw new Error(result.error)
+		if (!response.ok && result.error) {
+			throw new Error(result.message)
 		}
 
 		const user = result.data.user
 
-		const modal = bootstrap.Modal.getInstance(document.getElementById('modal-create'))
+		const modal = bootstrap.Modal.getInstance(
+			document.getElementById('modal-create'),
+		)
 		modal.hide()
 
 		addUserToTable(user)
@@ -161,10 +151,23 @@ function updateTableRow(id, userData) {
 
 	const cells = row.querySelectorAll('td')
 
-	cells[0].textContent = userData.firstName
-	cells[1].textContent = userData.lastName
-	cells[2].textContent = userData.email
-	cells[3].textContent = new Intl.DateTimeFormat('pt-BR', { timeZone: 'UTC' }).format(new Date(userData.birth))
+	if (userData.firstName) {
+		cells[0].textContent = userData.firstName
+	}
+
+	if (userData.lastName) {
+		cells[1].textContent = userData.lastName
+	}
+
+	if (userData.email) {
+		cells[2].textContent = userData.email
+	}
+
+	if (userData.birth) {
+		cells[3].textContent = new Intl.DateTimeFormat('pt-BR', {
+			timeZone: 'UTC',
+		}).format(new Date(userData.birth))
+	}
 
 	row.style.backgroundColor = '#d1ecf1'
 	setTimeout(() => {
@@ -193,7 +196,9 @@ function addUserToTable(user) {
 	row.insertCell(1).textContent = user.firstName
 	row.insertCell(2).textContent = user.lastName
 	row.insertCell(3).textContent = user.email
-	row.insertCell(4).textContent = new Intl.DateTimeFormat('pt-BR', { timeZone: 'UTC' }).format(new Date(user.birth))
+	row.insertCell(4).textContent = new Intl.DateTimeFormat('pt-BR', {
+		timeZone: 'UTC',
+	}).format(new Date(user.birth))
 
 	const actionsCell = row.insertCell(5)
 	actionsCell.innerHTML = createActionButtons(user)
